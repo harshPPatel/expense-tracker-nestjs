@@ -1,25 +1,27 @@
 import {
-  Equals,
   IsNotEmpty,
   IsString,
   Matches,
   MaxLength,
   MinLength,
-  ValidateIf,
 } from 'class-validator';
-import { PASSWORD_REGEX, USERNAME_REGEX } from '../utils/constants.auth';
+import { AuthConstants } from '../utils/constants.auth';
 import { Match } from '../utils/match.decorator';
 
 export class CreateAuthDto {
   @IsString()
-  @Matches(USERNAME_REGEX)
+  @Matches(AuthConstants.USERNAME_REGEX, {
+    message: 'Username is invalid',
+  })
   @MinLength(3)
   @MaxLength(15)
   @IsNotEmpty()
   username: string;
 
   @IsString()
-  @Matches(PASSWORD_REGEX)
+  @Matches(AuthConstants.PASSWORD_REGEX, {
+    message: 'Password is invalid',
+  })
   @MinLength(3)
   @MaxLength(15)
   @IsNotEmpty()
