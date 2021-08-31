@@ -23,17 +23,20 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column({ default: QuotesUtility.getRandomQuote(), nullable: false })
-  quote: string;
+  // Note: Way to set default values in Mongo + TypeORM
+  // YOU NEED TO CREATE User INSTANCE AND PASS THAT TO save FUNCTION
+  // CHECK USER SERVICE FOR REFERENCE
+  @Column({ nullable: false })
+  quote: string = QuotesUtility.getRandomQuote();
 
-  @Column({ default: 0, nullable: false })
-  theme: number;
+  @Column({ nullable: false })
+  theme = 0;
 
-  @Column({ default: '$', length: 1, nullable: false })
-  currency: string;
+  @Column({ length: 1, nullable: false })
+  currency = '$';
 
-  @Column({ default: 1000, nullable: false })
-  expenseWarningLimit: number;
+  @Column({ nullable: false })
+  expenseWarningLimit = 1000;
 
   @CreateDateColumn()
   createdAt: Date;

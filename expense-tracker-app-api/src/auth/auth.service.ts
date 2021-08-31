@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
@@ -11,6 +12,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly bcryptUtility: BcryptUtility,
+    private readonly jwtService: JwtService,
   ) {}
 
   // This function does not need to throw exception as this is a service which works as a provider, not as controller. So avoid any user related exceptions in service files
@@ -35,5 +37,20 @@ export class AuthService {
     );
 
     return await this.userService.create(createAuthDto);
+  }
+
+  async login(user: User) {
+    const jwtPayload = { username: user.username, sub: user.id };
+
+    return {
+      username: user.username,
+      token: this.jwtService.sign(jwtPayload),
+      settings: {
+        quote: user.quote,
+        theme: user.theme,
+        currency: user.currency,
+        expenseWarningLimit: user.expenseWarningLimit,
+      },
+    };
   }
 }

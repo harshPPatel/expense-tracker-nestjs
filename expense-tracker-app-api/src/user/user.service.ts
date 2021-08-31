@@ -15,7 +15,11 @@ export class UserService {
     return await this.usersRepository.find();
   }
 
-  async create(user: SignupAuthDto): Promise<User> {
+  async create(signupData: SignupAuthDto): Promise<User> {
+    const user = new User();
+    user.username = signupData.username;
+    user.password = signupData.password;
+    console.log(user);
     return await this.usersRepository.save(user);
     // TODO: Handle error with E11000 error: Use inceptor?? or try catch in auth service?
   }

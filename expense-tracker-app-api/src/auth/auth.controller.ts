@@ -1,21 +1,15 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   UseInterceptors,
   ClassSerializerInterceptor,
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { LoginAuthDto } from './dto/login-auth.dto';
 import { SignupAuthDto } from './dto/signup-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { LocalAuthGuard } from './local-auth.guard';
 
 // TODO: Use built in version control???
 @Controller('/api/v1/auth')
@@ -30,15 +24,13 @@ export class AuthController {
       signupAuthDto,
     );
     // TODO: This is a bad code
-
     return serializedUser;
-    // return this.authService.findAll();
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req) {
-    return req.user;
+    return this.authService.login(req.user);
   }
 
   // @Get(':id')
