@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
-import { CreateAuthDto } from '../auth/dto/create-auth.dto';
+import { SignupAuthDto } from '../auth/dto/signup-auth.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -15,8 +15,12 @@ export class UserService {
     return await this.usersRepository.find();
   }
 
-  async create(user: CreateAuthDto): Promise<User> {
+  async create(user: SignupAuthDto): Promise<User> {
     return await this.usersRepository.save(user);
     // TODO: Handle error with E11000 error: Use inceptor?? or try catch in auth service?
+  }
+
+  async findOne(username: string): Promise<User> {
+    return await this.usersRepository.findOne({ username });
   }
 }

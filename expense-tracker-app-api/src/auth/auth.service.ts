@@ -1,36 +1,39 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { LoginAuthDto } from './dto/login-auth.dto';
+import { SignupAuthDto } from './dto/signup-auth.dto';
+
 import { BcryptUtility } from './utils/bcrypt.utility';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly bcryptUtility: BcryptUtility,
+  ) {}
 
-  async signup(createAuthDto: CreateAuthDto): Promise<User> {
-    const bcryptUtility = new BcryptUtility();
-    createAuthDto.password = await bcryptUtility.hash(createAuthDto.password);
+  // This function does not need to throw exception as this is a service which works as a provider, not as controller. So avoid any user related exceptions in service files
+  async validateUser(username: string, password: string): Promise<User> {
+    const dbUser = await this.userService.findOne(username);
+    const isMatchedPassword = await this.bcryptUtility.isMatched(
+      password,
+      dbUser.password,
+    );
+
+    if (dbUser && isMatchedPassword) {
+      delete dbUser.password;
+      return dbUser;
+    }
+
+    return null;
+  }
+
+  async signup(createAuthDto: SignupAuthDto): Promise<User> {
+    createAuthDto.password = await this.bcryptUtility.hash(
+      createAuthDto.password,
+    );
 
     return await this.userService.create(createAuthDto);
-  }
-
-  async findAll() {
-    const data = await this.userService.findAll();
-    console.log(data);
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }

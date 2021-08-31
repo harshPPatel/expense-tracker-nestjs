@@ -7,4 +7,11 @@ export class BcryptUtility {
   public async hash(password: string): Promise<string> {
     return await bcrypt.hash(password, this.saltOrRounds);
   }
+
+  public async isMatched(
+    password: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    return await bcrypt.compare(password, hashedPassword);
+  }
 }
