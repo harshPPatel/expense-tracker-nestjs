@@ -7,6 +7,9 @@ import { LocalStrategy } from './local.strategy';
 import { BcryptUtility } from './utils/bcrypt.utility';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthConstants } from './utils/constants.auth';
+import { JwtStrategy } from './jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Module({
   imports: [
@@ -21,6 +24,15 @@ import { AuthConstants } from './utils/constants.auth';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, BcryptUtility],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    BcryptUtility,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AuthModule {}

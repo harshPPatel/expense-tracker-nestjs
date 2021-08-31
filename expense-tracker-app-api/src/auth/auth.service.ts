@@ -4,6 +4,7 @@ import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { SignupAuthDto } from './dto/signup-auth.dto';
+import { IJwtPayload } from './interfaces/jwt-payload.interface';
 
 import { BcryptUtility } from './utils/bcrypt.utility';
 
@@ -40,7 +41,7 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const jwtPayload = { username: user.username, sub: user.id };
+    const jwtPayload: IJwtPayload = { username: user.username, sub: user.id };
 
     return {
       username: user.username,

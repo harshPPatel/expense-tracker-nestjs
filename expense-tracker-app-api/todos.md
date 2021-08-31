@@ -1,16 +1,16 @@
-- [ ] Setup Database in project
+- [x] Setup Database in project
 
-  - [ ] Create docker container for local setup (to avoid issues on installing Mongo on local computer)
-  - [ ] setup MongoDB setup with TypeORM
-  - [ ] User Service
-  - [ ] Use "BeforeInsert" method to hash the password
-        https://tkssharma.com/nestjs-crud-using-typeorm-and-mysql/
-        Although, should it be there?
-        It is not a clean code as Entity should not worry about hashing the password
+  - [x] Create docker container for local setup (to avoid issues on installing Mongo on local computer)
+  - [x] setup MongoDB setup with TypeORM
+  - [x] User Service
+  - [-] Use "BeforeInsert" method to hash the password
+    https://tkssharma.com/nestjs-crud-using-typeorm-and-mysql/
+    Although, should it be there?
+    It is not a clean code as Entity should not worry about hashing the password
 
 - [ ] Auth Service
 
-  - [ ] JWT Setup with Passport
+  - [x] JWT Setup with Passport
     - This option should be similar to the setup I had in old project
   - [ ] Implement all auth routes
 
