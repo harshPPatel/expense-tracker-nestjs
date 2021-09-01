@@ -27,4 +27,10 @@ export class UserService {
   async findOne(username: string): Promise<User> {
     return await this.usersRepository.findOne({ username });
   }
+
+  async delete(username: string) {
+    return await this.usersRepository.deleteOne({
+      username,
+    });
+  }
 }

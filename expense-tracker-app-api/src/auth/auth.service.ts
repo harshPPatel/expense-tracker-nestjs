@@ -19,12 +19,17 @@ export class AuthService {
   // This function does not need to throw exception as this is a service which works as a provider, not as controller. So avoid any user related exceptions in service files
   async validateUser(username: string, password: string): Promise<User> {
     const dbUser = await this.userService.findOne(username);
+
+    if (!dbUser) {
+      return null;
+    }
+
     const isMatchedPassword = await this.bcryptUtility.isMatched(
       password,
       dbUser.password,
     );
 
-    if (dbUser && isMatchedPassword) {
+    if (isMatchedPassword) {
       delete dbUser.password;
       return dbUser;
     }
