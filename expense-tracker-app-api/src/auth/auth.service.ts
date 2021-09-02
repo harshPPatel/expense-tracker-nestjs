@@ -30,7 +30,6 @@ export class AuthService {
     );
 
     if (isMatchedPassword) {
-      delete dbUser.password;
       return dbUser;
     }
 

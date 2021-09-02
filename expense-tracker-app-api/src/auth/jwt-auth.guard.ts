@@ -1,12 +1,16 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
+import { UserService } from '../user/user.service';
 import { IS_PUBLIC_KEY } from './public.decorator';
 
 // We will be using this guard where we want to protect a route and which can only be accessed by logged in user
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private reflector: Reflector) {
+  constructor(
+    private reflector: Reflector,
+    private readonly userService: UserService,
+  ) {
     super();
   }
 

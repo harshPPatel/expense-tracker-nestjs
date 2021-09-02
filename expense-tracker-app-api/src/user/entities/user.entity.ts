@@ -1,22 +1,10 @@
-import { SerializeOptions } from '@nestjs/common';
-import { Exclude, Expose } from 'class-transformer';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ObjectID,
-  ObjectIdColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '../../entities/base.entity';
 import { QuotesUtility } from '../utils/quotes.utility';
 
 // TODO: Try implementing database level validation
 @Entity()
-export class User {
-  @ObjectIdColumn()
-  id: ObjectID;
-
+export class User extends BaseEntity {
   @Column({ unique: true, nullable: false })
   username: string;
 
@@ -37,10 +25,4 @@ export class User {
 
   @Column({ nullable: false })
   expenseWarningLimit = 1000;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
