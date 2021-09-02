@@ -17,4 +17,7 @@
 - [ ] Expenses, Incomes and Statements Routes
 
 - [ ] Versioning
+
   - We will be using only one version but try out the versioning feature of nestjs
+
+- [ ] testing

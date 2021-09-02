@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MongoRepository } from 'typeorm';
+import { MongoRepository, ObjectID } from 'typeorm';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { Expense } from './entities/expense.entity';
@@ -31,12 +31,15 @@ export class ExpenseService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} expense`;
+  async findOne(id: ObjectID) {
+    return await this.expensesRepository.findOne(id);
   }
 
-  update(id: number, updateExpenseDto: UpdateExpenseDto) {
-    return `This action updates a #${id} expense`;
+  async update(updateExpenseDto: UpdateExpenseDto, expense: Expense) {
+    expense.title = updateExpenseDto.title;
+    expense.amount = updateExpenseDto.amount;
+    expense.date = new Date(updateExpenseDto.date);
+    return await this.expensesRepository.save(expense);
   }
 
   remove(id: number) {

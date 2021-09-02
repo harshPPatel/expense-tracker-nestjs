@@ -7,10 +7,14 @@ import {
   Param,
   Delete,
   Req,
+  Put,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ExpenseService } from './expense.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { Expense } from './entities/expense.entity';
 
 @Controller('/api/v1/expense')
 export class ExpenseController {
@@ -18,10 +22,16 @@ export class ExpenseController {
 
   @Post('create')
   async create(@Req() req, @Body() createExpenseDto: CreateExpenseDto) {
-    return await this.expenseService.create(
+    const username = req.user.username;
+    const createdExpense = await this.expenseService.create(
       createExpenseDto,
-      req.user.username,
+      username,
     );
+    return {
+      expense: createdExpense,
+      message: 'Expense Created Successfully',
+      username: username,
+    };
   }
 
   @Get()
@@ -35,14 +45,34 @@ export class ExpenseController {
     };
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.expenseService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.expenseService.findOne(id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExpenseDto: UpdateExpenseDto) {
-    return this.expenseService.update(+id, updateExpenseDto);
+  @Put('update')
+  async update(@Req() req, @Body() updateExpenseDto: UpdateExpenseDto) {
+    const username = req.user.username;
+    const dbExpense: Expense = await this.expenseService.findOne(
+      updateExpenseDto.id,
+    );
+    if (!dbExpense) {
+      throw new NotFoundException();
+    }
+
+    if (dbExpense.username !== username) {
+      throw new UnauthorizedException();
+    }
+    const updatedExpense = await this.expenseService.update(
+      updateExpenseDto,
+      dbExpense,
+    );
+
+    return {
+      message: 'Expense Updated Successfully',
+      updatedExpense,
+      username,
+    };
   }
 
   @Delete(':id')

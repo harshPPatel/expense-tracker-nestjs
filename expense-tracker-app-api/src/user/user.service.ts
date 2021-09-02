@@ -27,17 +27,6 @@ export class UserService {
   async findOne(username: string): Promise<User> {
     return await this.usersRepository.findOne({
       username,
-      select: [
-        'username',
-        'createdAt',
-        'currency',
-        'expenseWarningLimit',
-        'id',
-        'quote',
-        'theme',
-        'updatedAt',
-        // typeorm currently does not support -syntax to remove one column
-      ],
     });
   }
 
