@@ -31,6 +31,23 @@ export class ExpenseService {
     });
   }
 
+  async findAllWithDateLimit(
+    username: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Expense[]> {
+    return await this.expensesRepository.find({
+      username,
+      where: {
+        date: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+      },
+      order: { date: 'DESC' },
+    });
+  }
+
   async findOne(id: ObjectID | string) {
     return await this.expensesRepository.findOne(id);
   }

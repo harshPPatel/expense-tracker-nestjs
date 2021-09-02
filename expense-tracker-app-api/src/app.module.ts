@@ -8,6 +8,9 @@ import { Expense } from './expense/entities/expense.entity';
 import { ExpenseModule } from './expense/expense.module';
 import { Income } from './income/entities/income.entity';
 import { IncomeModule } from './income/income.module';
+import { StatementController } from './statement/statement.controller';
+import { StatementModule } from './statement/statement.module';
+import { StatementService } from './statement/statement.service';
 import { User } from './user/entities/user.entity';
 
 @Module({
@@ -25,9 +28,9 @@ import { User } from './user/entities/user.entity';
     AuthModule,
     ExpenseModule,
     IncomeModule,
-    // UserModule,
+    StatementModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, StatementController],
+  providers: [AppService, StatementService],
 })
 export class AppModule {}

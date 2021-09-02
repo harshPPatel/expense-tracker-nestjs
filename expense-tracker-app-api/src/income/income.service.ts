@@ -31,6 +31,20 @@ export class IncomeService {
     });
   }
 
+  async findAllWithDateLimit(
+    username: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Income[]> {
+    return await this.incomesRepository.find({
+      username,
+      where: {
+        date: { $gte: startDate, $lte: endDate },
+      },
+      order: { date: 'DESC' },
+    });
+  }
+
   async findOne(id: ObjectID | string) {
     return await this.incomesRepository.findOne(id);
   }
