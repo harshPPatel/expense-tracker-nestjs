@@ -8,13 +8,18 @@
     Although, should it be there?
     It is not a clean code as Entity should not worry about hashing the password
 
-- [ ] Auth Service
+- [x] Auth Service
 
   - [x] JWT Setup with Passport
     - This option should be similar to the setup I had in old project
-  - [ ] Implement all auth routes
+  - [x] Implement all auth routes
 
 - [ ] Expenses, Incomes and Statements Routes
+
+  - [x] Expense
+  - [ ] Income
+  - [ ] Statement
+  - [ ] User
 
 - [ ] Versioning
 

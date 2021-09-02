@@ -31,7 +31,7 @@ export class ExpenseService {
     });
   }
 
-  async findOne(id: ObjectID) {
+  async findOne(id: ObjectID | string) {
     return await this.expensesRepository.findOne(id);
   }
 
@@ -42,7 +42,7 @@ export class ExpenseService {
     return await this.expensesRepository.save(expense);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} expense`;
+  async remove(expense: Expense) {
+    return await this.expensesRepository.remove(expense);
   }
 }

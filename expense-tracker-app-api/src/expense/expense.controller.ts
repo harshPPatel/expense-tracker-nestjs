@@ -1,20 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Req,
-  Put,
+  Get,
   NotFoundException,
+  Param,
+  Post,
+  Put,
+  Req,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ExpenseService } from './expense.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { Expense } from './entities/expense.entity';
+import { ExpenseService } from './expense.service';
 
 @Controller('/api/v1/expense')
 export class ExpenseController {
@@ -45,11 +44,6 @@ export class ExpenseController {
     };
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.expenseService.findOne(id);
-  // }
-
   @Put('update')
   async update(@Req() req, @Body() updateExpenseDto: UpdateExpenseDto) {
     const username = req.user.username;
@@ -76,7 +70,25 @@ export class ExpenseController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.expenseService.remove(+id);
+  async remove(@Param('id') id: string, @Req() req) {
+    const username = req.user.username;
+    // const expenseId = ObjectID.createFromHexString(id);
+    const dbExpense: Expense = await this.expenseService.findOne(id);
+
+    if (!dbExpense) {
+      throw new NotFoundException();
+    }
+
+    if (dbExpense.username !== username) {
+      throw new UnauthorizedException();
+    }
+
+    const deletedExpense = await this.expenseService.remove(dbExpense);
+
+    return {
+      message: 'Expense removed successfully!',
+      deletedExpense,
+      username,
+    };
   }
 }

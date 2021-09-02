@@ -4,10 +4,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseConstants } from './database.constants';
-import { User } from './user/entities/user.entity';
-import { UserModule } from './user/user.module';
-import { ExpenseModule } from './expense/expense.module';
 import { Expense } from './expense/entities/expense.entity';
+import { ExpenseModule } from './expense/expense.module';
+import { Income } from './income/entities/income.entity';
+import { IncomeModule } from './income/income.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -18,11 +19,12 @@ import { Expense } from './expense/entities/expense.entity';
       // username: '',
       // password: 'root',
       database: DatabaseConstants.DATABASE_NAME,
-      entities: [User, Expense],
+      entities: [User, Expense, Income],
       synchronize: true, // TODO: should be disabled in prod
     }),
     AuthModule,
     ExpenseModule,
+    IncomeModule,
     // UserModule,
   ],
   controllers: [AppController],
