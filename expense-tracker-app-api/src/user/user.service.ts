@@ -24,6 +24,10 @@ export class UserService {
     // TODO: Handle error with E11000 error: Use inceptor?? or try catch in auth service?
   }
 
+  async update(updatedUser: User) {
+    return await this.usersRepository.save(updatedUser);
+  }
+
   async findOne(username: string): Promise<User> {
     return await this.usersRepository.findOne({
       username,

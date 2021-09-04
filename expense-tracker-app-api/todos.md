@@ -17,12 +17,14 @@
 - [ ] Expenses, Incomes and Statements Routes
 
   - [x] Expense
-  - [ ] Income
-  - [ ] Statement
+  - [x] Income
+  - [x] Statement
   - [ ] User
 
 - [ ] Versioning
 
   - We will be using only one version but try out the versioning feature of nestjs
+
+- [ ] Middlewares from old project
 
 - [ ] testing
