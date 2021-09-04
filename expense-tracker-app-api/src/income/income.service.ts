@@ -25,8 +25,10 @@ export class IncomeService {
   }
 
   async findAll(username: string): Promise<Income[]> {
-    return await await this.incomesRepository.find({
-      username,
+    return await this.incomesRepository.find({
+      where: {
+        username,
+      },
       order: { date: 'DESC' },
     });
   }
@@ -37,8 +39,8 @@ export class IncomeService {
     endDate: Date,
   ): Promise<Income[]> {
     return await this.incomesRepository.find({
-      username,
       where: {
+        username,
         date: { $gte: startDate, $lte: endDate },
       },
       order: { date: 'DESC' },

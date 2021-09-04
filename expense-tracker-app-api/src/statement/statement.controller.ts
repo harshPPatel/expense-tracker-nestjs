@@ -18,10 +18,14 @@ export class StatementController {
       year,
     );
 
-    // TODO: Complete post processing on statements
-    // shuold be done inside statement service!!!!
+    const totalAmounts = this.statementService.getTotalAmounts(statements);
+
     return {
       statements,
+      count: statements.length,
+      totalExpenses: totalAmounts.totalExpenseAmount,
+      totalIncomes: totalAmounts.totalIncomeAmount,
+      username,
     };
   }
 }
