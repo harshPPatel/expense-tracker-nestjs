@@ -9,8 +9,10 @@ import {
   Req,
 } from '@nestjs/common';
 import { BcryptUtility } from '../auth/utils/bcrypt.utility';
+import { ChangeCurrencyDto } from './dto/change-currency.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangeQuoteDto } from './dto/change-quote.dto';
+import { ChangeThemeDto } from './dto/change-theme.dto';
 import { IDeletedUserResponse } from './interfaces/deleted-user-response.interface';
 import { UserService } from './user.service';
 import { QuotesUtility } from './utils/quotes.utility';
@@ -81,8 +83,67 @@ export class UserController {
 
     return {
       username,
-      message: 'Quote has updated successfully!',
+      message: 'Quote has been updated successfully!',
       updatedQuote: dbUser.quote,
+    };
+  }
+
+  @Get('theme')
+  async getTheme(@Req() req) {
+    const username = req.user.username;
+    const dbUser = await this.userService.findOne(username);
+
+    return {
+      username,
+      theme: dbUser.theme,
+    };
+  }
+
+  @Put('theme/update')
+  async updateTheme(@Req() req, @Body() changeThemeDto: ChangeThemeDto) {
+    const username = req.user.username;
+
+    const dbUser = await this.userService.findOne(username);
+
+    dbUser.theme = changeThemeDto.theme;
+
+    await this.userService.update(dbUser);
+
+    return {
+      username,
+      message: 'Theme has been updated successfully!',
+      updatedTheme: dbUser.theme,
+    };
+  }
+
+  @Get('currency')
+  async getCurrency(@Req() req) {
+    const username = req.user.username;
+    const dbUser = await this.userService.findOne(username);
+
+    return {
+      username,
+      currency: dbUser.currency,
+    };
+  }
+
+  @Put('currency/update')
+  async updateCurrency(
+    @Req() req,
+    @Body() changeCurrencyDto: ChangeCurrencyDto,
+  ) {
+    const username = req.user.username;
+
+    const dbUser = await this.userService.findOne(username);
+
+    dbUser.currency = changeCurrencyDto.currency;
+
+    await this.userService.update(dbUser);
+
+    return {
+      username,
+      message: 'Currency has been updated successfully!',
+      updatedCurrency: dbUser.currency,
     };
   }
 

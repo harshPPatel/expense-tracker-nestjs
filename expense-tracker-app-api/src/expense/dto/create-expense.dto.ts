@@ -13,7 +13,7 @@ export class CreateExpenseDto {
   @IsNotEmpty()
   title: string;
 
-  @IsNumber()
+  @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   @IsNotEmpty()
   amount: number;
