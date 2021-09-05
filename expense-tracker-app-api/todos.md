@@ -28,3 +28,8 @@
 - [ ] Middlewares from old project
 
 - [ ] testing
+
+- [ ] Clean Code
+  - [ ] wrap date-fns library
+  - [ ] organize constants properly
+  - [ ] notes for future reference?

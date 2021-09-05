@@ -3,14 +3,17 @@ import {
   Controller,
   Delete,
   ForbiddenException,
+  Get,
   NotFoundException,
   Put,
   Req,
 } from '@nestjs/common';
 import { BcryptUtility } from '../auth/utils/bcrypt.utility';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { ChangeQuoteDto } from './dto/change-quote.dto';
 import { IDeletedUserResponse } from './interfaces/deleted-user-response.interface';
 import { UserService } from './user.service';
+import { QuotesUtility } from './utils/quotes.utility';
 
 @Controller('/api/v1/user')
 export class UserController {
@@ -48,6 +51,38 @@ export class UserController {
     return {
       username,
       message: 'Your password has changed successfully!',
+    };
+  }
+
+  @Get('quote')
+  async getQuote(@Req() req) {
+    const username = req.user.username;
+    const dbUser = await this.userService.findOne(username);
+
+    return {
+      username,
+      quote: dbUser.quote,
+    };
+  }
+
+  @Put('quote/update')
+  async updateQuote(@Req() req, @Body() changeQuoteDto: ChangeQuoteDto) {
+    const username = req.user.username;
+
+    const dbUser = await this.userService.findOne(username);
+
+    if (changeQuoteDto.isRandom) {
+      dbUser.quote = QuotesUtility.getRandomQuote();
+    } else {
+      dbUser.quote = changeQuoteDto.quote;
+    }
+
+    await this.userService.update(dbUser);
+
+    return {
+      username,
+      message: 'Quote has updated successfully!',
+      updatedQuote: dbUser.quote,
     };
   }
 
