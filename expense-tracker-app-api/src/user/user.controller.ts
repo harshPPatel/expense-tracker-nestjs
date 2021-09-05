@@ -10,12 +10,14 @@ import {
 } from '@nestjs/common';
 import { BcryptUtility } from '../auth/utils/bcrypt.utility';
 import { ChangeCurrencyDto } from './dto/change-currency.dto';
+import { ChangeExpenseWarningLimitDto } from './dto/change-expense-warning-limit.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangeQuoteDto } from './dto/change-quote.dto';
 import { ChangeThemeDto } from './dto/change-theme.dto';
 import { IDeletedUserResponse } from './interfaces/deleted-user-response.interface';
 import { UserService } from './user.service';
 import { QuotesUtility } from './utils/quotes.utility';
+import { UsersConstants } from './utils/users.constants';
 
 @Controller('/api/v1/user')
 export class UserController {
@@ -144,6 +146,61 @@ export class UserController {
       username,
       message: 'Currency has been updated successfully!',
       updatedCurrency: dbUser.currency,
+    };
+  }
+
+  @Get('expenseWarningLimit')
+  async getExpenseWarningLimit(@Req() req) {
+    const username = req.user.username;
+    const dbUser = await this.userService.findOne(username);
+
+    return {
+      username,
+      expenseWarningLimit: dbUser.expenseWarningLimit,
+    };
+  }
+
+  @Put('expenseWarningLimit/update')
+  async updateExpenseWarningLimit(
+    @Req() req,
+    @Body() changeExpenseWarningLimitDto: ChangeExpenseWarningLimitDto,
+  ) {
+    const username = req.user.username;
+
+    const dbUser = await this.userService.findOne(username);
+
+    dbUser.expenseWarningLimit =
+      changeExpenseWarningLimitDto.expenseWarningLimit;
+
+    await this.userService.update(dbUser);
+
+    return {
+      username,
+      message: 'Expense Warning Limit has been updated successfully!',
+      updatedExpenseWarningLimit: dbUser.expenseWarningLimit,
+    };
+  }
+
+  @Put('default')
+  async setDefaultSettings(@Req() req) {
+    const username = req.user.username;
+
+    const dbUser = await this.userService.findOne(username);
+
+    dbUser.theme = UsersConstants.DEFAULT_THEME;
+    dbUser.currency = UsersConstants.DEFAULT_CURRENCY;
+    dbUser.expenseWarningLimit = UsersConstants.DEFAULT_EXPENSE_WARNING_LIMIT;
+
+    await this.userService.update(dbUser);
+
+    return {
+      username,
+      message: 'Settings are set to the default.',
+      defaultSettings: {
+        theme: dbUser.theme,
+        currency: dbUser.currency,
+        expenseWarningLimit: dbUser.expenseWarningLimit,
+      },
     };
   }
 

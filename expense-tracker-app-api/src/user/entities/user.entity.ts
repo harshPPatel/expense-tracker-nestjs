@@ -1,6 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../entities/base.entity';
 import { QuotesUtility } from '../utils/quotes.utility';
+import { UsersConstants } from '../utils/users.constants';
 
 // TODO: Try implementing database level validation
 @Entity()
@@ -18,11 +19,11 @@ export class User extends BaseEntity {
   quote: string = QuotesUtility.getRandomQuote();
 
   @Column({ nullable: false })
-  theme = 0;
+  theme = UsersConstants.DEFAULT_THEME;
 
   @Column({ length: 1, nullable: false })
-  currency = '$';
+  currency = UsersConstants.DEFAULT_CURRENCY;
 
   @Column({ nullable: false })
-  expenseWarningLimit = 1000;
+  expenseWarningLimit = UsersConstants.DEFAULT_EXPENSE_WARNING_LIMIT;
 }
