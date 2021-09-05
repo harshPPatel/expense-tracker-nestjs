@@ -61,4 +61,8 @@ export class IncomeService {
   async remove(income: Income) {
     return await this.incomesRepository.remove(income);
   }
+
+  async removeAllUserIncomes(username: string) {
+    return await this.incomesRepository.deleteMany({ username });
+  }
 }

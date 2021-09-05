@@ -14,18 +14,20 @@
     - This option should be similar to the setup I had in old project
   - [x] Implement all auth routes
 
-- [ ] Expenses, Incomes and Statements Routes
+- [x] Expenses, Incomes and Statements Routes
 
   - [x] Expense
   - [x] Income
   - [x] Statement
-  - [ ] User
+  - [x] User
 
 - [ ] Versioning
 
   - We will be using only one version but try out the versioning feature of nestjs
 
 - [ ] Middlewares from old project
+
+- [ ] Complete ALL TODO Comments
 
 - [ ] testing
 

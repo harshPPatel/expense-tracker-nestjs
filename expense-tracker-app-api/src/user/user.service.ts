@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { SignupAuthDto } from '../auth/dto/signup-auth.dto';
+import { ExpenseService } from '../expense/expense.service';
+import { IncomeService } from '../income/income.service';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -9,6 +11,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: MongoRepository<User>,
+    private expenseService: ExpenseService,
+    private incomeService: IncomeService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -35,7 +39,8 @@ export class UserService {
   }
 
   async delete(username: string) {
-    // TODO: Delete all the data for this user before we delete the user!!!!
+    await this.expenseService.removeAllUserExpenses(username);
+    await this.incomeService.removeAllUserIncomes(username);
     return await this.usersRepository.deleteOne({
       username,
     });

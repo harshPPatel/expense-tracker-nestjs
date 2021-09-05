@@ -64,4 +64,8 @@ export class ExpenseService {
   async remove(expense: Expense) {
     return await this.expensesRepository.remove(expense);
   }
+
+  async removeAllUserExpenses(username: string) {
+    return await this.expensesRepository.deleteMany({ username });
+  }
 }

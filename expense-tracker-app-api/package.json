@@ -33,6 +33,7 @@
     "class-validator": "^0.13.1",
     "date-fns": "^2.23.0",
     "dotenv": "^8.6.0",
+    "helmet": "^4.6.0",
     "mongodb": "^3.6.12",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
